@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ozY-K2-c1z">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Main View Controller-->
+        <scene sceneID="HYv-W2-fs3">
+            <objects>
+                <viewController storyboardIdentifier="MainViewController" id="ozY-K2-c1z" customClass="MainViewController" customModule="M_Tribes_Challenge" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Ozk-2w-nDi"/>
+                        <viewControllerLayoutGuide type="bottom" id="54J-1C-VQG"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="fW7-Cm-sir">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="t0U-Hk-dSc">
+                                <rect key="frame" x="146" y="20" width="83" height="29"/>
+                                <segments>
+                                    <segment title="List"/>
+                                    <segment title="Map"/>
+                                </segments>
+                                <connections>
+                                    <action selector="layoutOptionChanged:" destination="ozY-K2-c1z" eventType="valueChanged" id="OrK-OR-TOb"/>
+                                </connections>
+                            </segmentedControl>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kYl-p7-THV">
+                                <rect key="frame" x="0.0" y="56" width="375" height="611"/>
+                                <connections>
+                                    <segue destination="uWQ-uf-443" kind="embed" id="Wlh-8P-Zpu"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="kYl-p7-THV" firstAttribute="top" secondItem="t0U-Hk-dSc" secondAttribute="bottom" constant="8" symbolic="YES" id="2X3-76-exU"/>
+                            <constraint firstItem="t0U-Hk-dSc" firstAttribute="centerX" secondItem="kYl-p7-THV" secondAttribute="centerX" id="AW4-wG-YvH"/>
+                            <constraint firstItem="kYl-p7-THV" firstAttribute="leading" secondItem="fW7-Cm-sir" secondAttribute="leading" id="CeP-jB-MnR"/>
+                            <constraint firstItem="t0U-Hk-dSc" firstAttribute="centerX" secondItem="fW7-Cm-sir" secondAttribute="centerX" id="STk-8b-t5a"/>
+                            <constraint firstItem="t0U-Hk-dSc" firstAttribute="top" secondItem="Ozk-2w-nDi" secondAttribute="bottom" id="YZo-QS-UfJ"/>
+                            <constraint firstItem="kYl-p7-THV" firstAttribute="bottom" secondItem="54J-1C-VQG" secondAttribute="top" id="j4A-N4-X8H"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="layoutView" destination="kYl-p7-THV" id="RhV-gr-05h"/>
+                        <outlet property="locationLayoutOptions" destination="t0U-Hk-dSc" id="m2T-Pf-Eyd"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Kos-cV-eh1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-650.39999999999998" y="-1300.2998500749627"/>
+        </scene>
+        <!--List Table View Controller-->
+        <scene sceneID="ulQ-SM-TY6">
+            <objects>
+                <tableViewController storyboardIdentifier="ListLayout" id="uWQ-uf-443" customClass="ListTableViewController" customModule="M_Tribes_Challenge" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="cw8-VV-pK9">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="611"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <connections>
+                            <outlet property="dataSource" destination="uWQ-uf-443" id="8bI-oS-6Wl"/>
+                            <outlet property="delegate" destination="uWQ-uf-443" id="7WG-2E-xrw"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bTb-Za-ZUE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1028" y="-454"/>
+        </scene>
+        <!--MapViewController-->
+        <scene sceneID="k9w-Ry-ram">
+            <objects>
+                <viewController storyboardIdentifier="MapLayout" title="MapViewController" id="tCp-OY-zM8" customClass="MapViewController" customModule="M_Tribes_Challenge" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="LuC-e8-lV1"/>
+                        <viewControllerLayoutGuide type="bottom" id="Mcp-RW-6P2"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="OnO-hI-Gbc">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="EWu-2I-yoB">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </mapView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="locationsMap" destination="EWu-2I-yoB" id="DNj-nO-VFm"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wig-yh-G5o" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-185" y="-430"/>
+        </scene>
+    </scenes>
+</document>
