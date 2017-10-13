@@ -17,14 +17,31 @@ class MapViewController: UIViewController,MKMapViewDelegate {
 	
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+		self.locationsMap.showsUserLocation = false
+		self.renderMapAnnotations()
     }
 
 	func setLocationsInfo(notification:Notification){
 		if let locationsInfo = notification.userInfo?["locationsData"]{
 			self.locationsInfo = locationsInfo as? [JSON]
+			self.renderMapAnnotations()
 		}
 	}
 
+	func renderMapAnnotations(){
+		if self.locationsMap != nil && self.locationsInfo != nil{
+			if !self.locationsMap.annotations.isEmpty{
+				self.locationsMap.removeAnnotations(self.locationsMap.annotations)
+			}
+			for userLocation in self.locationsInfo!{
+				let locationAnnotation = MKPointAnnotation()
+				let coordinates = userLocation["coordinates"].arrayValue
+				locationAnnotation.coordinate = CLLocationCoordinate2DMake(coordinates[1].doubleValue, coordinates[0].doubleValue);
+				locationAnnotation.title = userLocation["name"].stringValue
+				locationAnnotation.subtitle = userLocation["address"].stringValue
+				self.locationsMap.addAnnotation(locationAnnotation)
+			}
+		}
+	}
+	
 }
