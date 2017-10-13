@@ -10,7 +10,7 @@ import UIKit
 import SwiftyJSON
 class ListTableViewController: UITableViewController {
 
-	var locationsInfo : [JSON]?
+	private var locationsInfo : [JSON]?
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -19,19 +19,8 @@ class ListTableViewController: UITableViewController {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		self.loadLocations()
 	}
-	func loadLocations(){
-		let locationService = LocationService.getInstance()
-		locationService.getLocations { (locationsData, error) in
-			if locationsData != nil && error == nil{
-				self.locationsInfo = locationsData
-				self.tableView.reloadData()
-			}else{
-			}
-		}
-	}
-
+	
 	override func numberOfSections(in tableView: UITableView) -> Int {
 		return 1
 	}
@@ -49,14 +38,20 @@ class ListTableViewController: UITableViewController {
 			let location = locationsInfo![indexPath.row].dictionaryValue
 			cell.address.text = location["address"]!.stringValue
 			cell.locationName.text = location["name"]!.stringValue
-//			cell.fuel.text = location["fuel"]!.stringValue
-//			cell.vin.text = location["vin"]!.stringValue
-//			cell.ex_interior.text = "\(location["exterior"]!.stringValue))/\(String(describing: location["interior"]!.stringValue))"
 			return cell
 		}
 		
 		return cell
 
+	}
+	
+	func setLocationsInfo(notification:Notification){
+		if let locationsInfo = notification.userInfo?["locationsData"]{
+			self.locationsInfo = locationsInfo as? [JSON]
+			DispatchQueue.main.async {
+				self.tableView.reloadData()
+			}
+		}
 	}
 }
 
