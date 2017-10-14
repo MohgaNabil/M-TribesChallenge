@@ -23,7 +23,7 @@ class MapViewController: UIViewController,MKMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 		self.locationsMap.delegate = self
-		self.locationsMap.showsUserLocation = false
+		self.locationsMap.setUserTrackingMode(.follow, animated: true)
 		self.renderMapAnnotations()
     }
 

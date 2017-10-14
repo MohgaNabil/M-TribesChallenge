@@ -62,7 +62,11 @@ class MainViewController: UIViewController {
 				self.locationsInfo = locationsData
 				NotificationCenter.default.post(name: NSNotification.Name(rawValue: "LocationInfoChanged"), object: nil, userInfo: ["locationsData":self.locationsInfo!])
 			}else{
-				//TO-DO: Display alert
+				let errAlert = UIAlertController(title: "Error", message: "Something went wrong, try again later", preferredStyle: .alert)
+				errAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+				DispatchQueue.main.async {
+						self.present(errAlert, animated: true, completion: nil)
+				}
 			}
 		}
 	}
