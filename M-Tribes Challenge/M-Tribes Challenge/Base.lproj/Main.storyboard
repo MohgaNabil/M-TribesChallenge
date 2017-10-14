@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -38,9 +39,9 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="kYl-p7-THV" firstAttribute="top" secondItem="t0U-Hk-dSc" secondAttribute="bottom" constant="8" symbolic="YES" id="2X3-76-exU"/>
-                            <constraint firstItem="t0U-Hk-dSc" firstAttribute="centerX" secondItem="kYl-p7-THV" secondAttribute="centerX" id="AW4-wG-YvH"/>
                             <constraint firstItem="kYl-p7-THV" firstAttribute="leading" secondItem="fW7-Cm-sir" secondAttribute="leading" id="CeP-jB-MnR"/>
-                            <constraint firstItem="t0U-Hk-dSc" firstAttribute="centerX" secondItem="fW7-Cm-sir" secondAttribute="centerX" id="STk-8b-t5a"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="kYl-p7-THV" secondAttribute="trailing" constant="-16" id="RoV-e2-JFP"/>
+                            <constraint firstItem="t0U-Hk-dSc" firstAttribute="centerX" secondItem="fW7-Cm-sir" secondAttribute="centerX" id="SED-Go-i7P"/>
                             <constraint firstItem="t0U-Hk-dSc" firstAttribute="top" secondItem="Ozk-2w-nDi" secondAttribute="bottom" id="YZo-QS-UfJ"/>
                             <constraint firstItem="kYl-p7-THV" firstAttribute="bottom" secondItem="54J-1C-VQG" secondAttribute="top" id="j4A-N4-X8H"/>
                         </constraints>
@@ -70,7 +71,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bTb-Za-ZUE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1028" y="-454"/>
+            <point key="canvasLocation" x="-1031" y="-430"/>
         </scene>
         <!--MapViewController-->
         <scene sceneID="k9w-Ry-ram">
@@ -84,12 +85,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="EWu-2I-yoB">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsScale="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EWu-2I-yoB">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                             </mapView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="leadingMargin" secondItem="EWu-2I-yoB" secondAttribute="leading" constant="16" id="6Pn-n4-NfV"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="EWu-2I-yoB" secondAttribute="trailing" constant="-16" id="G7m-5B-AuC"/>
+                            <constraint firstItem="EWu-2I-yoB" firstAttribute="top" secondItem="LuC-e8-lV1" secondAttribute="bottom" id="IpF-LO-lRY"/>
+                            <constraint firstItem="Mcp-RW-6P2" firstAttribute="top" secondItem="EWu-2I-yoB" secondAttribute="bottom" id="qVB-Kp-5bb"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="locationsMap" destination="EWu-2I-yoB" id="DNj-nO-VFm"/>
@@ -97,7 +102,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wig-yh-G5o" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-185" y="-430"/>
+            <point key="canvasLocation" x="-180" y="-430.43478260869568"/>
         </scene>
     </scenes>
 </document>

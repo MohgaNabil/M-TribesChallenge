@@ -119,6 +119,7 @@
 		A9AA91311F8FFD58007DB40A /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				A9AA912D1F8FFD43007DB40A /* LocationTableViewCell.swift */,
 			);
 			name = ViewModel;
 			sourceTree = "<group>";
@@ -149,7 +150,6 @@
 			isa = PBXGroup;
 			children = (
 				A9AA91311F8FFD58007DB40A /* ViewModel */,
-				A9AA912D1F8FFD43007DB40A /* LocationTableViewCell.swift */,
 				A9DEB1441F8FD18F00EEF2D1 /* Controllers */,
 				A9DEB1431F8FD17B00EEF2D1 /* Services */,
 				A9DEB1421F8FD17100EEF2D1 /* Models */,

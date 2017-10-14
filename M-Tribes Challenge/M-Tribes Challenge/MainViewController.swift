@@ -25,9 +25,10 @@ class MainViewController: UIViewController {
 		NotificationCenter.default.addObserver(mapViewController, selector:#selector(MapViewController.setLocationsInfo(notification:)), name: NSNotification.Name(rawValue: "LocationInfoChanged"), object: nil)
 		NotificationCenter.default.addObserver(listViewController, selector:#selector(ListTableViewController.setLocationsInfo(notification:)), name: NSNotification.Name(rawValue: "LocationInfoChanged"), object: nil)
 		
-		listViewController.view.center = self.layoutView.center
 		self.layoutView.addSubview(listViewController.view)
+		listViewController.view.topAnchor.constraint(equalTo: self.layoutView.topAnchor).isActive = true
 		
+		self.view.layoutSubviews()
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -49,8 +50,9 @@ class MainViewController: UIViewController {
 			viewController = mapViewController
 			break
 		}
-		viewController!.view.center = self.layoutView.center
 		self.layoutView.addSubview(viewController!.view)
+		viewController!.view.topAnchor.constraint(equalTo: self.layoutView.topAnchor).isActive = true
+		self.view.layoutSubviews()
 	}
 	
 	func loadLocations(){

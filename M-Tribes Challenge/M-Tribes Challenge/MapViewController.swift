@@ -53,7 +53,6 @@ class MapViewController: UIViewController,MKMapViewDelegate {
 	func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
 		if carMode == .SINGLE{
 			self.renderMapAnnotations()
-			view.setSelected(false, animated: true)
 			carMode = .MULTIPLE
 		}else{
 			let tap = UITapGestureRecognizer(target: self, action: #selector(MapViewController.tapAnnotationPin(gesture:)))
@@ -70,7 +69,7 @@ class MapViewController: UIViewController,MKMapViewDelegate {
 	
 	
 	func tapAnnotationPin(gesture: UITapGestureRecognizer){
-		if gesture.view is MKAnnotationView{
+		if gesture.view != nil && gesture.view is MKAnnotationView{
 			let annotationView = gesture.view as! MKAnnotationView
 			annotationView.removeGestureRecognizer(gesture)
 			self.locationsMap.deselectAnnotation(annotationView.annotation!, animated: true)
