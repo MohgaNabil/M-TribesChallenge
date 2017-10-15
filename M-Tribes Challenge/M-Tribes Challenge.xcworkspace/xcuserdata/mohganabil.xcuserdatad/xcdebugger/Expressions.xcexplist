@@ -11,6 +11,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "MapViewController.mapView(MKMapView, didUpdate : MKUserLocation) -&gt; ():MapViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "JSON(userLocationJson)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "LocationService.(getLocations(completionHandler : (NSDictionary?, Error?) -&gt; ()) -&gt; ()).(closure #1):LocationService.swift">
          <PersistentStrings>
             <PersistentString
