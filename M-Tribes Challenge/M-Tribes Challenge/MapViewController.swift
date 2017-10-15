@@ -45,7 +45,6 @@ class MapViewController: UIViewController,MKMapViewDelegate,CLLocationManagerDel
 	func setLocationsInfo(notification:Notification){
 		if let locationsInfo = notification.userInfo?["locationsData"]{
 			self.locationsInfo = locationsInfo as? [JSON]
-			self.renderMapAnnotations()
 		}
 	}
 
@@ -70,13 +69,13 @@ class MapViewController: UIViewController,MKMapViewDelegate,CLLocationManagerDel
 				locationAnnotation.title = self.tableLocation!["name"].stringValue
 				locationAnnotation.subtitle = self.tableLocation!["address"].stringValue
 				self.locationsMap.addAnnotation(locationAnnotation)
-				
-				let useLocationAnnotation = MKPointAnnotation()
-				useLocationAnnotation.coordinate = self.locationManager.location!.coordinate
-				useLocationAnnotation.title = self.locationsMap.userLocation.title
-				useLocationAnnotation.subtitle = self.locationsMap.userLocation.subtitle
-				self.locationsMap.addAnnotation(useLocationAnnotation)
 			}
+			
+			let useLocationAnnotation = MKPointAnnotation()
+			useLocationAnnotation.coordinate = self.locationManager.location!.coordinate
+			useLocationAnnotation.title = "Current Location"
+			useLocationAnnotation.subtitle = self.locationsMap.userLocation.subtitle
+			self.locationsMap.addAnnotation(useLocationAnnotation)
 		}
 	}
 	
@@ -86,7 +85,8 @@ class MapViewController: UIViewController,MKMapViewDelegate,CLLocationManagerDel
 	///   - mapView
 	///   - view: annotation view being selected
 	func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-		guard self.tableLocation != nil else{
+		if self.tableLocation == nil{
+		
 			if carMode == .SINGLE{
 				self.renderMapAnnotations()
 				carMode = .MULTIPLE
@@ -94,14 +94,13 @@ class MapViewController: UIViewController,MKMapViewDelegate,CLLocationManagerDel
 				let tap = UITapGestureRecognizer(target: self, action: #selector(MapViewController.tapAnnotationPin(gesture:)))
 				view.addGestureRecognizer(tap)
 				self.locationsMap.annotations.forEach({ (annotation) in
-					guard view.annotation != nil && annotation.title! == view.annotation!.title! else{
+					guard view.annotation != nil && annotation.title! == view.annotation!.title! || annotation.title! == "Current Location" else{
 						self.locationsMap.removeAnnotation(annotation)
 						return
 					}
 				})
 				carMode = .SINGLE
 			}
-			return
 		}
 	}
 	
@@ -128,28 +127,6 @@ class MapViewController: UIViewController,MKMapViewDelegate,CLLocationManagerDel
 		locationManager.startUpdatingHeading()
 	}
 	
-	/// fetches the user's current location
-	///
-	/// - Parameters:
-	///   - mapView
-	///   - userLocation
-//	func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
-//		let userLocationJson = ["name":"Current location", "Address":userLocation.subtitle as Any,"coordinates":[userLocation.coordinate.longitude,userLocation.coordinate.latitude] ]
-//		self.locationsInfo?.append(JSON(userLocationJson))
-//		
-//		let center = CLLocationCoordinate2D(latitude: userLocation.coordinate.latitude, longitude: userLocation.coordinate.longitude)
-//		let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
-//		
-//		self.locationsMap.setRegion(region, animated: true)
-//		
-//		let currentLocationAnnotation = MKPointAnnotation()
-//		currentLocationAnnotation.coordinate = CLLocationCoordinate2DMake(userLocation.coordinate.latitude, userLocation.coordinate.longitude);
-//		currentLocationAnnotation.title = "Current location"
-//		currentLocationAnnotation.subtitle = userLocation.subtitle
-//		self.locationsMap.addAnnotation(currentLocationAnnotation)
-//
-//	}
-	
 	/// remove all map annotation
 	func clearMap(){
 		if !self.locationsMap.annotations.isEmpty{
@@ -165,9 +142,6 @@ class MapViewController: UIViewController,MKMapViewDelegate,CLLocationManagerDel
 	func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
 		self.locationManager.stopUpdatingLocation()
 		self.locationManager.stopUpdatingHeading()
-		let userLocation = locations[0] as CLLocation
-		let userLocationJson = ["name":"Current location", "Address": "", "coordinates":[userLocation.coordinate.longitude,userLocation.coordinate.latitude]] as [String : Any]
-		self.locationsInfo?.append(JSON(userLocationJson))
 		self.renderMapAnnotations()
 	}
 	

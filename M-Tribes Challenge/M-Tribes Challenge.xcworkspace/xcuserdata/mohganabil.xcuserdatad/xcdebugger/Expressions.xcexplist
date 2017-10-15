@@ -3,14 +3,6 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "LocationService.(getLocations(completionHandler : ([CarLocation]?, Error?) -&gt; ()) -&gt; ()).(closure #1):LocationService.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "placemarks.arrayObject as? [CarLocation]">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
          contextName = "MapViewController.mapView(MKMapView, didUpdate : MKUserLocation) -&gt; ():MapViewController.swift">
          <PersistentStrings>
             <PersistentString
@@ -23,6 +15,33 @@
          <PersistentStrings>
             <PersistentString
                value = "response.result.value as? NSDictionary">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "MapViewController.locationManager(CLLocationManager, didUpdateLocations : [CLLocation]) -&gt; ():MapViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "MapViewController.mapView(MKMapView, didSelect : MKAnnotationView) -&gt; ():MapViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "annotation.title!">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "MapViewController.(mapView(MKMapView, didSelect : MKAnnotationView) -&gt; ()).(closure #1):MapViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "annotation.title!">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "LocationService.(getLocations(completionHandler : ([CarLocation]?, Error?) -&gt; ()) -&gt; ()).(closure #1):LocationService.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "placemarks.arrayObject as? [CarLocation]">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
