@@ -10,6 +10,7 @@ import UIKit
 import SwiftyJSON
 class ListTableViewController: UITableViewController {
 
+	var shared:MainViewController?
 	private var locationsInfo : [JSON]?
 	
 	override func viewDidLoad() {
@@ -45,6 +46,21 @@ class ListTableViewController: UITableViewController {
 
 	}
 	
+	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		if let location = self.locationsInfo?[indexPath.row]{
+			self.shared!.showLocationOnMap(location: location)
+		}
+	}
+	
+	override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+		if let location = self.locationsInfo?[indexPath.row]{
+			self.shared!.showLocationOnMap(location: location)
+		}
+	}
+	
+	/// cascade changes in model data
+	///
+	/// - Parameter notification: notification received with data
 	func setLocationsInfo(notification:Notification){
 		if let locationsInfo = notification.userInfo?["locationsData"]{
 			self.locationsInfo = locationsInfo as? [JSON]

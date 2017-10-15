@@ -14,14 +14,15 @@ class MainViewController: UIViewController {
 	@IBOutlet weak var locationLayoutOptions: UISegmentedControl!
 	var mapViewController: MapViewController!
 	var listViewController: ListTableViewController!
-	var locationsInfo:[JSON]?
 	@IBOutlet weak var layoutView: UIView!
 	
     override func viewDidLoad() {
         super.viewDidLoad()
 		let storyBoard = UIStoryboard(name: "Main", bundle: nil)
 		mapViewController = storyBoard.instantiateViewController(withIdentifier: "MapLayout") as! MapViewController
+		mapViewController.shared = self
 		listViewController = storyBoard.instantiateViewController(withIdentifier: "ListLayout") as! ListTableViewController
+		listViewController.shared = self
 		NotificationCenter.default.addObserver(mapViewController, selector:#selector(MapViewController.setLocationsInfo(notification:)), name: NSNotification.Name(rawValue: "LocationInfoChanged"), object: nil)
 		NotificationCenter.default.addObserver(listViewController, selector:#selector(ListTableViewController.setLocationsInfo(notification:)), name: NSNotification.Name(rawValue: "LocationInfoChanged"), object: nil)
 		
@@ -45,12 +46,13 @@ class MainViewController: UIViewController {
 			childView.removeFromSuperview()
 		}
 		switch index {
-		case 0:
-			viewController = listViewController
-			break
-		default:
-			viewController = mapViewController
-			break
+			case 0:
+				viewController = listViewController
+				break
+			default:
+				mapViewController.tableLocation = nil
+				viewController = mapViewController
+				break
 		}
 		self.layoutView.addSubview(viewController!.view)
 		viewController!.view.topAnchor.constraint(equalTo: self.layoutView.topAnchor).isActive = true
@@ -62,13 +64,12 @@ class MainViewController: UIViewController {
 		let locationService = LocationService.getInstance()
 		locationService.getLocations { (locationsData, error) in
 			if locationsData != nil && error == nil{
-				self.locationsInfo = locationsData
-				NotificationCenter.default.post(name: NSNotification.Name(rawValue: "LocationInfoChanged"), object: nil, userInfo: ["locationsData":self.locationsInfo!])
+				NotificationCenter.default.post(name: NSNotification.Name(rawValue: "LocationInfoChanged"), object: nil, userInfo: ["locationsData":locationsData])
 			}else{
 				let errAlert = UIAlertController(title: "Error", message: "Something went wrong, try again later", preferredStyle: .alert)
 				errAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
 				DispatchQueue.main.async {
-						self.present(errAlert, animated: true, completion: nil)
+					self.present(errAlert, animated: true, completion: nil)
 				}
 			}
 		}
@@ -78,6 +79,16 @@ class MainViewController: UIViewController {
 		super.viewWillDisappear(animated)
 		NotificationCenter.default.removeObserver(listViewController)
 		NotificationCenter.default.removeObserver(mapViewController)
+	}
+	
+	/// show selected location on map
+	///
+	/// - Parameter location
+	func showLocationOnMap(location: JSON){
+		mapViewController.tableLocation = location
+		self.layoutView.addSubview(mapViewController.view)
+		mapViewController.view.topAnchor.constraint(equalTo: self.layoutView.topAnchor).isActive = true
+		self.locationLayoutOptions.selectedSegmentIndex = 1
 	}
 }
 

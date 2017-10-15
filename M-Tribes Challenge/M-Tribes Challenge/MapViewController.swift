@@ -20,7 +20,8 @@ class MapViewController: UIViewController,MKMapViewDelegate,CLLocationManagerDel
 	private var locationsInfo : [JSON]?
 	var carMode : CarMode = .MULTIPLE
 	var locationManager: CLLocationManager!
-	
+	var shared:MainViewController?
+	var tableLocation:JSON?
     override func viewDidLoad() {
         super.viewDidLoad()
 		//Configure Map
@@ -52,13 +53,29 @@ class MapViewController: UIViewController,MKMapViewDelegate,CLLocationManagerDel
 	func renderMapAnnotations(){
 		if self.locationsMap != nil && self.locationsInfo != nil{
 			self.clearMap()
-			for carLocation in self.locationsInfo!{
+
+			if self.tableLocation == nil {
+				for carLocation in self.locationsInfo!{
+					let locationAnnotation = MKPointAnnotation()
+					let coordinates = carLocation["coordinates"].arrayValue
+					locationAnnotation.coordinate = CLLocationCoordinate2DMake(coordinates[1].doubleValue, coordinates[0].doubleValue);
+					locationAnnotation.title = carLocation["name"].stringValue
+					locationAnnotation.subtitle = carLocation["address"].stringValue
+					self.locationsMap.addAnnotation(locationAnnotation)
+				}
+			}else {
 				let locationAnnotation = MKPointAnnotation()
-				let coordinates = carLocation["coordinates"].arrayValue
-				locationAnnotation.coordinate = CLLocationCoordinate2DMake(coordinates[1].doubleValue, coordinates[0].doubleValue);
-				locationAnnotation.title = carLocation["name"].stringValue
-				locationAnnotation.subtitle = carLocation["address"].stringValue
+				let coordinates = self.tableLocation!["coordinates"].arrayValue
+				locationAnnotation.coordinate = CLLocationCoordinate2DMake(coordinates[1].doubleValue, coordinates[0].doubleValue)
+				locationAnnotation.title = self.tableLocation!["name"].stringValue
+				locationAnnotation.subtitle = self.tableLocation!["address"].stringValue
 				self.locationsMap.addAnnotation(locationAnnotation)
+				
+				let useLocationAnnotation = MKPointAnnotation()
+				useLocationAnnotation.coordinate = self.locationManager.location!.coordinate
+				useLocationAnnotation.title = self.locationsMap.userLocation.title
+				useLocationAnnotation.subtitle = self.locationsMap.userLocation.subtitle
+				self.locationsMap.addAnnotation(useLocationAnnotation)
 			}
 		}
 	}
@@ -69,19 +86,22 @@ class MapViewController: UIViewController,MKMapViewDelegate,CLLocationManagerDel
 	///   - mapView
 	///   - view: annotation view being selected
 	func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-		if carMode == .SINGLE{
-			self.renderMapAnnotations()
-			carMode = .MULTIPLE
-		}else{
-			let tap = UITapGestureRecognizer(target: self, action: #selector(MapViewController.tapAnnotationPin(gesture:)))
-			view.addGestureRecognizer(tap)
-			self.locationsMap.annotations.forEach({ (annotation) in
-				guard view.annotation != nil && annotation.title! == view.annotation!.title! else{
-					self.locationsMap.removeAnnotation(annotation)
-					return
-				}
-			})
-			carMode = .SINGLE
+		guard self.tableLocation != nil else{
+			if carMode == .SINGLE{
+				self.renderMapAnnotations()
+				carMode = .MULTIPLE
+			}else{
+				let tap = UITapGestureRecognizer(target: self, action: #selector(MapViewController.tapAnnotationPin(gesture:)))
+				view.addGestureRecognizer(tap)
+				self.locationsMap.annotations.forEach({ (annotation) in
+					guard view.annotation != nil && annotation.title! == view.annotation!.title! else{
+						self.locationsMap.removeAnnotation(annotation)
+						return
+					}
+				})
+				carMode = .SINGLE
+			}
+			return
 		}
 	}
 	
@@ -149,5 +169,10 @@ class MapViewController: UIViewController,MKMapViewDelegate,CLLocationManagerDel
 		let userLocationJson = ["name":"Current location", "Address": "", "coordinates":[userLocation.coordinate.longitude,userLocation.coordinate.latitude]] as [String : Any]
 		self.locationsInfo?.append(JSON(userLocationJson))
 		self.renderMapAnnotations()
+	}
+	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		self.clearMap()
 	}
 }
