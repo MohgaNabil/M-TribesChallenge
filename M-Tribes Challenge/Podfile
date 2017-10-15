@@ -9,7 +9,7 @@ target 'M-Tribes Challenge' do
    pod 'SwiftyJSON'
   target 'M-Tribes ChallengeTests' do
     inherit! :search_paths
-    # Pods for testing
+    pod 'SwiftyJSON'
   end
 
   target 'M-Tribes ChallengeUITests' do

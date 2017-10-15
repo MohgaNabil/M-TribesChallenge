@@ -709,7 +709,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 40D7CC325B4905FA14B27070 /* Pods-M-Tribes ChallengeTests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = Q7W47GFKL3;
 				INFOPLIST_FILE = "M-Tribes ChallengeTests/Info.plist";
@@ -725,7 +725,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F5A3E16CD6A16EFB123C2270 /* Pods-M-Tribes ChallengeTests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = Q7W47GFKL3;
 				INFOPLIST_FILE = "M-Tribes ChallengeTests/Info.plist";

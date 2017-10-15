@@ -21,16 +21,15 @@ class M_Tribes_ChallengeTests: XCTestCase {
         super.tearDown()
     }
     
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-    
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+    func testFetchingLocations() {
+		let expectation = XCTestExpectation(description: "Fetch Locations")
+		
+		LocationService.getInstance().getLocations { ( locations, err) in
+			XCTAssertNil(err, "service call failed")
+			XCTAssertNotNil(locations, "No locations were fetched")
+			expectation.fulfill()
+		}
+		wait(for: [expectation], timeout: 5.0)
     }
     
 }
