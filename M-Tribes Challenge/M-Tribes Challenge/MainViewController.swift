@@ -27,7 +27,6 @@ class MainViewController: UIViewController {
 		
 		self.layoutView.addSubview(listViewController.view)
 		listViewController.view.topAnchor.constraint(equalTo: self.layoutView.topAnchor).isActive = true
-		
 		self.view.layoutSubviews()
     }
 	
@@ -36,6 +35,9 @@ class MainViewController: UIViewController {
 		self.loadLocations()
 	}
     
+	/// handle switching segments
+	///
+	/// - Parameter sender: selected segment
 	@IBAction func layoutOptionChanged(_ sender: UISegmentedControl) {
 		let index = sender.selectedSegmentIndex
 		var viewController:UIViewController?
@@ -55,6 +57,7 @@ class MainViewController: UIViewController {
 		self.view.layoutSubviews()
 	}
 	
+	/// loading locations from backend service and cascade model changes
 	func loadLocations(){
 		let locationService = LocationService.getInstance()
 		locationService.getLocations { (locationsData, error) in
