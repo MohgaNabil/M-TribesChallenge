@@ -57,7 +57,7 @@ class MapViewController: UIViewController,MKMapViewDelegate,CLLocationManagerDel
 				for carLocation in self.locationsInfo!{
 					let locationAnnotation = MKPointAnnotation()
 					let coordinates = carLocation["coordinates"].arrayValue
-					locationAnnotation.coordinate = CLLocationCoordinate2DMake(coordinates[1].doubleValue, coordinates[0].doubleValue);
+					locationAnnotation.coordinate = CLLocationCoordinate2DMake(coordinates[1].doubleValue, coordinates[0].doubleValue)
 					locationAnnotation.title = carLocation["name"].stringValue
 					locationAnnotation.subtitle = carLocation["address"].stringValue
 					self.locationsMap.addAnnotation(locationAnnotation)
@@ -65,6 +65,10 @@ class MapViewController: UIViewController,MKMapViewDelegate,CLLocationManagerDel
 			}else {
 				let locationAnnotation = MKPointAnnotation()
 				let coordinates = self.tableLocation!["coordinates"].arrayValue
+				let center = CLLocationCoordinate2D(latitude: coordinates[1].doubleValue, longitude: coordinates[0].doubleValue)
+				let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
+				self.locationsMap.setRegion(region, animated: true)
+				
 				locationAnnotation.coordinate = CLLocationCoordinate2DMake(coordinates[1].doubleValue, coordinates[0].doubleValue)
 				locationAnnotation.title = self.tableLocation!["name"].stringValue
 				locationAnnotation.subtitle = self.tableLocation!["address"].stringValue
