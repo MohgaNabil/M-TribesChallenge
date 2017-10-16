@@ -64,7 +64,7 @@ class MainViewController: UIViewController {
 		let locationService = LocationService.getInstance()
 		locationService.getLocations { (locationsData, error) in
 			if locationsData != nil && error == nil{
-				NotificationCenter.default.post(name: NSNotification.Name(rawValue: "LocationInfoChanged"), object: nil, userInfo: ["locationsData":locationsData])
+				NotificationCenter.default.post(name: NSNotification.Name(rawValue: "LocationInfoChanged"), object: nil, userInfo: ["locationsData":locationsData as Any])
 			}else{
 				let errAlert = UIAlertController(title: "Error", message: "Something went wrong, try again later", preferredStyle: .alert)
 				errAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))

@@ -70,12 +70,15 @@ class MapViewController: UIViewController,MKMapViewDelegate,CLLocationManagerDel
 				locationAnnotation.subtitle = self.tableLocation!["address"].stringValue
 				self.locationsMap.addAnnotation(locationAnnotation)
 			}
+			guard self.locationManager.location == nil else {
+				let useLocationAnnotation = MKPointAnnotation()
+				useLocationAnnotation.coordinate = self.locationManager.location!.coordinate
+				useLocationAnnotation.title = "Current Location"
+				useLocationAnnotation.subtitle = self.locationsMap.userLocation.subtitle
+				self.locationsMap.addAnnotation(useLocationAnnotation)
+				return
+			}
 			
-			let useLocationAnnotation = MKPointAnnotation()
-			useLocationAnnotation.coordinate = self.locationManager.location!.coordinate
-			useLocationAnnotation.title = "Current Location"
-			useLocationAnnotation.subtitle = self.locationsMap.userLocation.subtitle
-			self.locationsMap.addAnnotation(useLocationAnnotation)
 		}
 	}
 	
@@ -119,9 +122,13 @@ class MapViewController: UIViewController,MKMapViewDelegate,CLLocationManagerDel
 	/// Authorize app to access current location
 	func authorizeLocation(){
 		let status = CLLocationManager.authorizationStatus()
-		if status == .notDetermined || status == .denied || status == .authorizedWhenInUse {
-			locationManager.requestAlwaysAuthorization()
-			locationManager.requestWhenInUseAuthorization()
+		switch status {
+			case .notDetermined:
+				locationManager.requestWhenInUseAuthorization()
+				break
+			default:
+				self.renderMapAnnotations()
+				break
 		}
 		locationManager.startUpdatingLocation()
 		locationManager.startUpdatingHeading()
