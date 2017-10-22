@@ -9,12 +9,11 @@
 import UIKit
 import SwiftyJSON
 class ListTableViewController: UITableViewController,UIChangesDelegate {
-
-	var shared:MainViewController?
-	private var locationsInfo : [JSON]?
+	public var locationsInfo : [JSON]?
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		self.tableView.dataSource = self
 		self.tableView.register(UINib(nibName:"LocationTableViewCell",bundle:nil), forCellReuseIdentifier: "LocationInfoCell")
 	}
 	
@@ -44,18 +43,6 @@ class ListTableViewController: UITableViewController,UIChangesDelegate {
 		
 		return cell
 
-	}
-	
-	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		if let location = self.locationsInfo?[indexPath.row]{
-			self.shared!.showLocationOnMap(location: location)
-		}
-	}
-	
-	override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-		if let location = self.locationsInfo?[indexPath.row]{
-			self.shared!.showLocationOnMap(location: location)
-		}
 	}
 	
 	/// cascade changes in model data

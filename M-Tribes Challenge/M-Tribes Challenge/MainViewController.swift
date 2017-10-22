@@ -23,7 +23,7 @@ class MainViewController: UIViewController {
 		let storyBoard = UIStoryboard(name: "Main", bundle: nil)
 		mapViewControllerDelegate = storyBoard.instantiateViewController(withIdentifier: "MapLayout") as! MapViewController
 		listViewControllerDelegate = storyBoard.instantiateViewController(withIdentifier: "ListLayout") as! ListTableViewController
-		listViewControllerDelegate.shared = self
+		listViewControllerDelegate.tableView.delegate = self
 		self.layoutView.addSubview(listViewControllerDelegate.view)
 		listViewControllerDelegate.view.topAnchor.constraint(equalTo: self.layoutView.topAnchor).isActive = true
 		self.view.layoutSubviews()
@@ -86,6 +86,20 @@ class MainViewController: UIViewController {
 		self.layoutView.addSubview(mapViewControllerDelegate.view)
 		mapViewControllerDelegate.view.topAnchor.constraint(equalTo: self.layoutView.topAnchor).isActive = true
 		self.locationLayoutOptions.selectedSegmentIndex = 1
+	}
+}
+
+extension MainViewController:UITableViewDelegate{
+	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		if let location = self.listViewControllerDelegate.locationsInfo?[indexPath.row]{
+			self.showLocationOnMap(location: location)
+		}
+	}
+	
+	func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+		if let location = self.listViewControllerDelegate.locationsInfo?[indexPath.row]{
+			self.showLocationOnMap(location: location)
+		}
 	}
 }
 
