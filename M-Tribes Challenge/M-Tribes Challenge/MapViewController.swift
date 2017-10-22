@@ -14,13 +14,12 @@ enum CarMode{
 	case SINGLE, MULTIPLE
 }
 
-class MapViewController: UIViewController,MKMapViewDelegate,CLLocationManagerDelegate {
+class MapViewController: UIViewController,MKMapViewDelegate,CLLocationManagerDelegate,UIChangesDelegate {
 
 	@IBOutlet weak var locationsMap: MKMapView!
 	private var locationsInfo : [JSON]?
 	var carMode : CarMode = .MULTIPLE
 	var locationManager: CLLocationManager!
-	var shared:MainViewController?
 	var tableLocation:JSON?
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,9 +41,9 @@ class MapViewController: UIViewController,MKMapViewDelegate,CLLocationManagerDel
 	/// cascade changes in model data
 	///
 	/// - Parameter notification: notification received with data
-	func setLocationsInfo(notification:Notification){
-		if let locationsInfo = notification.userInfo?["locationsData"]{
-			self.locationsInfo = locationsInfo as? [JSON]
+	func  cascadeChange(locationsData: [JSON]?){
+		if let locationsInfo = locationsData{
+			self.locationsInfo = locationsInfo
 		}
 	}
 

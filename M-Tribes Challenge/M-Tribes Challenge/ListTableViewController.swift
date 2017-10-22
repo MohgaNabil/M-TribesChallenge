@@ -8,7 +8,7 @@
 
 import UIKit
 import SwiftyJSON
-class ListTableViewController: UITableViewController {
+class ListTableViewController: UITableViewController,UIChangesDelegate {
 
 	var shared:MainViewController?
 	private var locationsInfo : [JSON]?
@@ -61,9 +61,9 @@ class ListTableViewController: UITableViewController {
 	/// cascade changes in model data
 	///
 	/// - Parameter notification: notification received with data
-	func setLocationsInfo(notification:Notification){
-		if let locationsInfo = notification.userInfo?["locationsData"]{
-			self.locationsInfo = locationsInfo as? [JSON]
+	func  cascadeChange(locationsData: [JSON]?){
+		if let locationsInfo = locationsData{
+			self.locationsInfo = locationsInfo
 			DispatchQueue.main.async {
 				self.tableView.reloadData()
 			}

@@ -9,23 +9,21 @@
 import UIKit
 import SwiftyJSON
 
+protocol UIChangesDelegate {
+	func cascadeChange(locationsData: [JSON]?)
+}
 class MainViewController: UIViewController {
 
 	@IBOutlet weak var locationLayoutOptions: UISegmentedControl!
 	var mapViewController: MapViewController!
 	var listViewController: ListTableViewController!
 	@IBOutlet weak var layoutView: UIView!
-	
-    override func viewDidLoad() {
+	override func viewDidLoad() {
         super.viewDidLoad()
 		let storyBoard = UIStoryboard(name: "Main", bundle: nil)
 		mapViewController = storyBoard.instantiateViewController(withIdentifier: "MapLayout") as! MapViewController
-		mapViewController.shared = self
 		listViewController = storyBoard.instantiateViewController(withIdentifier: "ListLayout") as! ListTableViewController
 		listViewController.shared = self
-		NotificationCenter.default.addObserver(mapViewController, selector:#selector(MapViewController.setLocationsInfo(notification:)), name: NSNotification.Name(rawValue: "LocationInfoChanged"), object: nil)
-		NotificationCenter.default.addObserver(listViewController, selector:#selector(ListTableViewController.setLocationsInfo(notification:)), name: NSNotification.Name(rawValue: "LocationInfoChanged"), object: nil)
-		
 		self.layoutView.addSubview(listViewController.view)
 		listViewController.view.topAnchor.constraint(equalTo: self.layoutView.topAnchor).isActive = true
 		self.view.layoutSubviews()
@@ -64,7 +62,8 @@ class MainViewController: UIViewController {
 		let locationService = LocationService.getInstance()
 		locationService.getLocations { (locationsData, error) in
 			if locationsData != nil && error == nil{
-				NotificationCenter.default.post(name: NSNotification.Name(rawValue: "LocationInfoChanged"), object: nil, userInfo: ["locationsData":locationsData as Any])
+				self.listViewController.cascadeChange(locationsData: locationsData)
+				self.mapViewController.cascadeChange(locationsData: locationsData)
 			}else{
 				let errAlert = UIAlertController(title: "Error", message: "Something went wrong, try again later", preferredStyle: .alert)
 				errAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
@@ -77,8 +76,6 @@ class MainViewController: UIViewController {
 
 	override func viewWillDisappear(_ animated: Bool) {
 		super.viewWillDisappear(animated)
-		NotificationCenter.default.removeObserver(listViewController)
-		NotificationCenter.default.removeObserver(mapViewController)
 	}
 	
 	/// show selected location on map
