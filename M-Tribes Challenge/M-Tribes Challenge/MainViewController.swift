@@ -15,17 +15,17 @@ protocol UIChangesDelegate {
 class MainViewController: UIViewController {
 
 	@IBOutlet weak var locationLayoutOptions: UISegmentedControl!
-	var mapViewController: MapViewController!
-	var listViewController: ListTableViewController!
+	var mapViewControllerDelegate: MapViewController!
+	var listViewControllerDelegate: ListTableViewController!
 	@IBOutlet weak var layoutView: UIView!
 	override func viewDidLoad() {
         super.viewDidLoad()
 		let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-		mapViewController = storyBoard.instantiateViewController(withIdentifier: "MapLayout") as! MapViewController
-		listViewController = storyBoard.instantiateViewController(withIdentifier: "ListLayout") as! ListTableViewController
-		listViewController.shared = self
-		self.layoutView.addSubview(listViewController.view)
-		listViewController.view.topAnchor.constraint(equalTo: self.layoutView.topAnchor).isActive = true
+		mapViewControllerDelegate = storyBoard.instantiateViewController(withIdentifier: "MapLayout") as! MapViewController
+		listViewControllerDelegate = storyBoard.instantiateViewController(withIdentifier: "ListLayout") as! ListTableViewController
+		listViewControllerDelegate.shared = self
+		self.layoutView.addSubview(listViewControllerDelegate.view)
+		listViewControllerDelegate.view.topAnchor.constraint(equalTo: self.layoutView.topAnchor).isActive = true
 		self.view.layoutSubviews()
     }
 	
@@ -45,11 +45,11 @@ class MainViewController: UIViewController {
 		}
 		switch index {
 			case 0:
-				viewController = listViewController
+				viewController = listViewControllerDelegate
 				break
 			default:
-				mapViewController.tableLocation = nil
-				viewController = mapViewController
+				mapViewControllerDelegate.tableLocation = nil
+				viewController = mapViewControllerDelegate
 				break
 		}
 		self.layoutView.addSubview(viewController!.view)
@@ -62,8 +62,8 @@ class MainViewController: UIViewController {
 		let locationService = LocationService.getInstance()
 		locationService.getLocations { (locationsData, error) in
 			if locationsData != nil && error == nil{
-				self.listViewController.cascadeChange(locationsData: locationsData)
-				self.mapViewController.cascadeChange(locationsData: locationsData)
+				self.listViewControllerDelegate.cascadeChange(locationsData: locationsData)
+				self.mapViewControllerDelegate.cascadeChange(locationsData: locationsData)
 			}else{
 				let errAlert = UIAlertController(title: "Error", message: "Something went wrong, try again later", preferredStyle: .alert)
 				errAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
@@ -82,9 +82,9 @@ class MainViewController: UIViewController {
 	///
 	/// - Parameter location
 	func showLocationOnMap(location: JSON){
-		mapViewController.tableLocation = location
-		self.layoutView.addSubview(mapViewController.view)
-		mapViewController.view.topAnchor.constraint(equalTo: self.layoutView.topAnchor).isActive = true
+		mapViewControllerDelegate.tableLocation = location
+		self.layoutView.addSubview(mapViewControllerDelegate.view)
+		mapViewControllerDelegate.view.topAnchor.constraint(equalTo: self.layoutView.topAnchor).isActive = true
 		self.locationLayoutOptions.selectedSegmentIndex = 1
 	}
 }
